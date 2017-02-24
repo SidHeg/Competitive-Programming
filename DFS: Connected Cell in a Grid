@@ -1,0 +1,70 @@
+import java.io.*;
+import java.util.*;
+import java.text.*;
+import java.math.*;
+import java.util.regex.*;
+
+public class Solution {
+    
+    private static int getBiggestRegion(int[][] matrix) {
+        
+        int max = 0;
+        int n = matrix.length;
+        int m = matrix[0].length;
+        Boolean[][] marked = new Boolean[n][m];
+        Stack<int[]> stack = new Stack<int[]>();
+        for(int grid_i=0; grid_i < n; grid_i++){
+            for(int grid_j=0; grid_j < m; grid_j++){
+                marked[grid_i][grid_j] = false;
+            }
+        }
+        for(int grid_i=0; grid_i < n; grid_i++){
+            for(int grid_j=0; grid_j < m; grid_j++){
+                if(matrix[grid_i][grid_j] == 1 && !marked[grid_i][grid_j]){
+                    int count = 0;
+                    marked[grid_i][grid_j] = true; 
+                    int[] p = {grid_i,grid_j};
+                    //System.out.println(p[0]+" "+p[1]);
+                    stack.push(p);
+                    while(!stack.isEmpty()){
+                        int[] mat = stack.pop();
+                        //System.out.println(grid_i+" "+grid_j+" || "+mat[0]+" "+mat[1]);
+                        count++;
+                        for(int i = -1; i <= 1; i++){
+                            for(int j = -1; j <= 1; j++){
+                                try{
+                                    if(matrix[mat[0]+i][mat[1]+j] == 1 && !marked[mat[0]+i][mat[1]+j]) {
+                                        marked[mat[0]+i][mat[1]+j] = true;
+                                        int[] p1 = {mat[0]+i,mat[1]+j};
+                                        //System.out.println(p1[0]+" "+p1[1]);
+                                        stack.push(p1);
+                                    }
+                                } catch (Exception e) {
+                                        //continue;
+                                }
+                                //System.out.println(i+" "+j);
+                            }
+                        }
+                    }
+                    if (count > max){
+                        max = count;
+                    }
+                }
+            }
+        }
+        return max;
+    }
+    
+    public static void main(String[] args) {
+        Scanner in = new Scanner(System.in);
+        int n = in.nextInt();
+        int m = in.nextInt();
+        int grid[][] = new int[n][m];
+        for(int grid_i=0; grid_i < n; grid_i++){
+            for(int grid_j=0; grid_j < m; grid_j++){
+                grid[grid_i][grid_j] = in.nextInt();
+            }
+        }
+        System.out.println(getBiggestRegion(grid));
+    }
+}
