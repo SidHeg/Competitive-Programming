@@ -1,0 +1,54 @@
+//my code for the following problem https://www.hackerrank.com/challenges/ctci-is-binary-search-tree
+
+/* Hidden stub code will pass a root argument to the function below. Complete the function to solve the challenge. Hint: you may want to write one or more helper functions.  
+
+The Node class is defined as follows:
+    class Node {
+        int data;
+        Node left;
+        Node right;
+     }
+*/
+    boolean checkLeft(Node root, int value) {
+        if(root.left == null && root.right == null){
+            if (root.data < value)
+            return true;
+            else{
+                return false;
+            }
+        }
+        if(root.data < value){
+            if(checkLeft(root.left, value) && checkLeft(root.right, value)){       
+                if(checkBST(root)){
+                    return true;
+                }
+            }
+        }
+        return false;        
+    }
+    boolean checkRight(Node root, int value) {
+        if(root.left == null && root.right == null){
+            if (root.data > value)
+            return true;
+            else{
+                return false;
+            }
+        }
+        if(root.data > value){
+            if(checkRight(root.left, value) && checkRight(root.right, value)){                
+                if(checkBST(root)){
+                    return true;
+                }
+            }
+        }
+        return false;        
+    }
+    boolean checkBST(Node root) {
+        if(root.left == null && root.right == null){
+            return true;
+        }
+        if(checkLeft(root.left, root.data) && checkRight(root.right, root.data)){                
+                return true;
+        }
+        return false;
+    }
